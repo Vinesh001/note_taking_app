@@ -46,8 +46,8 @@ const postSignup = async(req,res) => {
             password:hashPassword
         })
 
-        const userId = user._id.toString();
-        const token = jwt.sign({userId, name, userName, email}, SECRET_KEY);
+        const userId = user._id;
+        const token = jwt.sign({userId, name, userName, email}, SECRET_KEY );
 
         res.json({
             message:"User will added to the databases!",
@@ -93,7 +93,7 @@ const postSignin = async (req, res)=>{
         const userName = user.userName;
         const name = user.name;
         const email = user.email;
-        token = jwt.sign({userId, userName, name, email}, SECRET_KEY);
+        const token = jwt.sign({userId, userName, name, email}, SECRET_KEY );
 
         res.json({
             message:"User is login",
@@ -108,6 +108,27 @@ const postSignin = async (req, res)=>{
     }
 }
 
+const checkUser = async (req, res)=>{
+    try{
+        const token = req.headers.authorization.split(' ')[1];
+        // console.log(token)
+        const decodedToken = jwt.verify(token ,  SECRET_KEY);
+        const userId = decodedToken.userId;
+    
+        const userData = await User.find({_id:userId});
+    
+        res.json({
+            userData,
+            success:true
+        })
+    }catch(error){
+        res.json({
+            message:error.message,
+            success:false
+        })
+    }
+
+}
 
 userRouter
     .route('/signup')
@@ -118,7 +139,7 @@ userRouter
 
 userRouter
     .route('/checkUser')
-    .post(checkUser)
+    .get(checkUser)
    
 module.exports={
     userRouter
