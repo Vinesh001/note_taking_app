@@ -1,9 +1,15 @@
 const express = require('express');
+const {routes} = require('./routes/index')
 const app = express();
+const db = require('./db')
 
+app.use(express.json());
+
+app.use('/v1', routes);
 app.get('/', (req, res)=>{
     res.json({
-        message:"Server is working fine!"
+        message:"Server is working fine!",
+        person:"This is Vinesh!"
     })
 })
 
