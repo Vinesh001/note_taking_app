@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require('cors')
 const {routes} = require('./routes/index')
 const app = express();
 const db = require('./db')
 
+app.use(cors())
 app.use(express.json());
 
 app.use('/v1', routes);

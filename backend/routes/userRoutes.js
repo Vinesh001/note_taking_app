@@ -108,12 +108,17 @@ const postSignin = async (req, res)=>{
     }
 }
 
+
 userRouter
     .route('/signup')
     .post(postSignup)
 userRouter
     .route('/signin')
     .post(postSignin)
+
+userRouter
+    .route('/checkUser')
+    .post(checkUser)
    
 module.exports={
     userRouter
